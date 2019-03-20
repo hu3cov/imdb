@@ -57,9 +57,8 @@ public class MovieRepository extends AbstractDAO<Movie>
         return Optional.ofNullable(get(id));
     }
     
-    public void delete(Long id)
+    public void delete(Movie movie)
     {
-        Movie movie = findById(id).orElseThrow(() -> new NotFoundException("Could not find movie with id = " + id));
         currentSession().delete(movie);
     }
     
@@ -68,6 +67,18 @@ public class MovieRepository extends AbstractDAO<Movie>
         try
         {
             return persist(movie);
+        }
+        catch (ConstraintViolationException e)
+        {
+            throw new ForbiddenException("Movie with given name already exist in database.");
+        }
+    }
+    
+    public Movie update(Movie movie)
+    {
+        try
+        {
+            return (Movie) currentSession().merge(movie);
         }
         catch (ConstraintViolationException e)
         {

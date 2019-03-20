@@ -34,10 +34,19 @@ public class GenreResource
         List<Genre> dbGenries = genreRepository.findAll();
         
         return dbGenries.stream()
-                        .map(g -> GenreDTO.builder()
-                                          .id(g.getId())
-                                          .name(g.getName())
-                                          .build())
+                        .map(g -> mapGenreToDto(g))
                         .collect(Collectors.toList());
+    }
+    
+    //
+    // privates
+    //
+    
+    private GenreDTO mapGenreToDto(Genre g)
+    {
+        return GenreDTO.builder()
+                       .id(g.getId())
+                       .name(g.getName())
+                       .build();
     }
 }

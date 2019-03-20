@@ -34,11 +34,20 @@ public class ActorResource
         List<Actor> dbActors = actorRepository.findAll();
 
         return dbActors.stream()
-                       .map(a -> ActorDTO.builder()
-                                         .id(a.getId())
-                                         .fullName(a.getName() + " " + a.getSurname())
-                                         .birthDate(a.getBirthDate() != null ? a.getBirthDate().toString() : null)
-                                         .build())
+                       .map(a -> mapActorToDto(a))
                        .collect(Collectors.toList());
+    }
+    
+    //
+    // privates
+    //
+    
+    private ActorDTO mapActorToDto(Actor a)
+    {
+        return ActorDTO.builder()
+                       .id(a.getId())
+                       .fullName(a.getName() + " " + a.getSurname())
+                       .birthDate(a.getBirthDate() != null ? a.getBirthDate().toString() : null)
+                       .build();
     }
 }
