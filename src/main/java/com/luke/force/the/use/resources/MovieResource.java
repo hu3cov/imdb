@@ -15,6 +15,10 @@ import io.swagger.annotations.ApiOperation;
 @Produces(MediaType.APPLICATION_JSON)
 public class MovieResource
 {
+    public MovieResource()
+    {
+    }
+    
     @GET
     @Path("{id}")
     @ApiOperation(value = "View single Movie by given ID")

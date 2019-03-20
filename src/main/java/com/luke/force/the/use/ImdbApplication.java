@@ -1,8 +1,15 @@
 package com.luke.force.the.use;
 
+import com.luke.force.the.use.api.Actor;
+import com.luke.force.the.use.api.Genre;
+import com.luke.force.the.use.api.Movie;
+import com.luke.force.the.use.resources.MovieResource;
+
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.federecio.dropwizard.swagger.SwaggerBundle;
@@ -14,6 +21,15 @@ public class ImdbApplication extends Application<ImdbConfiguration>
     {
         new ImdbApplication().run(args);
     }
+    
+    private final HibernateBundle<ImdbConfiguration> hibernateBundle = new HibernateBundle<ImdbConfiguration>(Movie.class, Genre.class, Actor.class)
+    {
+        @Override
+        public DataSourceFactory getDataSourceFactory(ImdbConfiguration configuration)
+        {
+            return configuration.getDataSourceFactory();
+        }
+    };
 
     @Override
     public String getName()
@@ -27,6 +43,7 @@ public class ImdbApplication extends Application<ImdbConfiguration>
         bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(bootstrap
             .getConfigurationSourceProvider(), new EnvironmentVariableSubstitutor(false)));
         
+        bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(new SwaggerBundle<ImdbConfiguration>() {
             @Override
             protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(ImdbConfiguration configuration) {
@@ -38,5 +55,6 @@ public class ImdbApplication extends Application<ImdbConfiguration>
     @Override
     public void run(final ImdbConfiguration configuration, final Environment environment)
     {
+        environment.jersey().register(new MovieResource());
     }
 }
