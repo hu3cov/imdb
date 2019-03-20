@@ -5,6 +5,7 @@ import com.luke.force.the.use.api.Genre;
 import com.luke.force.the.use.api.Movie;
 import com.luke.force.the.use.db.ActorRepository;
 import com.luke.force.the.use.db.GenreRepository;
+import com.luke.force.the.use.db.MovieRepository;
 import com.luke.force.the.use.resources.ActorResource;
 import com.luke.force.the.use.resources.GenreResource;
 import com.luke.force.the.use.resources.MovieResource;
@@ -59,9 +60,10 @@ public class ImdbApplication extends Application<ImdbConfiguration>
     @Override
     public void run(final ImdbConfiguration configuration, final Environment environment)
     {
+        final MovieRepository movieRepository = new MovieRepository(hibernateBundle.getSessionFactory());
         final GenreRepository genreRepository = new GenreRepository(hibernateBundle.getSessionFactory());
         final ActorRepository actorRepository = new ActorRepository(hibernateBundle.getSessionFactory());
-        environment.jersey().register(new MovieResource());
+        environment.jersey().register(new MovieResource(movieRepository));
         environment.jersey().register(new GenreResource(genreRepository));
         environment.jersey().register(new ActorResource(actorRepository));
     }
