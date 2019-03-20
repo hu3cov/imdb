@@ -5,3 +5,6 @@ logging:
     
 server:
   rootPath: /api/*
+  
+swagger:
+  resourcePackage: com.luke.force.the.use.resources

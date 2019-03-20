@@ -5,6 +5,8 @@ import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 
 public class ImdbApplication extends Application<ImdbConfiguration>
 {
@@ -24,6 +26,13 @@ public class ImdbApplication extends Application<ImdbConfiguration>
     {
         bootstrap.setConfigurationSourceProvider(new SubstitutingSourceProvider(bootstrap
             .getConfigurationSourceProvider(), new EnvironmentVariableSubstitutor(false)));
+        
+        bootstrap.addBundle(new SwaggerBundle<ImdbConfiguration>() {
+            @Override
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(ImdbConfiguration configuration) {
+                return configuration.swaggerBundleConfiguration;
+            }
+        });
     }
 
     @Override
