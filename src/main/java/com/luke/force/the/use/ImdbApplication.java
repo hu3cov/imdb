@@ -63,7 +63,7 @@ public class ImdbApplication extends Application<ImdbConfiguration>
         final MovieRepository movieRepository = new MovieRepository(hibernateBundle.getSessionFactory());
         final GenreRepository genreRepository = new GenreRepository(hibernateBundle.getSessionFactory());
         final ActorRepository actorRepository = new ActorRepository(hibernateBundle.getSessionFactory());
-        environment.jersey().register(new MovieResource(movieRepository));
+        environment.jersey().register(new MovieResource(movieRepository, genreRepository, actorRepository));
         environment.jersey().register(new GenreResource(genreRepository));
         environment.jersey().register(new ActorResource(actorRepository));
     }

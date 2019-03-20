@@ -10,10 +10,12 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
 import com.luke.force.the.use.api.Actor;
@@ -59,5 +61,17 @@ public class MovieRepository extends AbstractDAO<Movie>
     {
         Movie movie = findById(id).orElseThrow(() -> new NotFoundException("Could not find movie with id = " + id));
         currentSession().delete(movie);
+    }
+    
+    public Movie create(Movie movie)
+    {
+        try
+        {
+            return persist(movie);
+        }
+        catch (ConstraintViolationException e)
+        {
+            throw new ForbiddenException("Movie with given name already exist in database.");
+        }
     }
 }
