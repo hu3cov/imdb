@@ -3,6 +3,7 @@ package com.luke.force.the.use.resources;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -57,6 +58,14 @@ public class MovieResource
                                                                            .map(m -> mapMovieToDto(m))
                                                                            .collect(Collectors.toList());
 
+    }
+    
+    @DELETE
+    @Path("{id}")
+    @UnitOfWork
+    public void removeMovie(@PathParam("id") LongParam id)
+    {
+        movieRepository.delete(id.get());
     }
     
     //

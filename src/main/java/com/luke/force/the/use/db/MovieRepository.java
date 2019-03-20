@@ -10,6 +10,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.ws.rs.NotFoundException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -52,5 +53,11 @@ public class MovieRepository extends AbstractDAO<Movie>
     public Optional<Movie> findById(Long id)
     {
         return Optional.ofNullable(get(id));
+    }
+    
+    public void delete(Long id)
+    {
+        Movie movie = findById(id).orElseThrow(() -> new NotFoundException("Could not find movie with id = " + id));
+        currentSession().delete(movie);
     }
 }
