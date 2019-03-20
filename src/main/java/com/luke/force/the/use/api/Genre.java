@@ -9,12 +9,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import lombok.Data;
 
 @Entity
 @Table(name = "GENRES")
+@NamedQueries(
+{
+    @NamedQuery(
+        name = "com.luke.force.the.use.api.Genre.findAll",
+        query = "SELECT g FROM Genre g"
+    )
+})
 @Data
 public class Genre
 {
