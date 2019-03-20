@@ -161,7 +161,7 @@ public class MovieResource
                     .build();
     }
     
-    private Movie mapDtoToMovie(Movie movie, MovieDTO movieDTO)
+    private void mapDtoToMovie(Movie movie, MovieDTO movieDTO)
     {
         movie.setName(movieDTO.getName());
         movie.setStoryline(movieDTO.getDescription());
@@ -177,7 +177,5 @@ public class MovieResource
                                       .map(a -> a.getId())
                                       .collect(Collectors.toSet());
         movie.setActors(actorRepository.findActorsByIds(actorsIds));
-        
-        return movie;
     }
 }

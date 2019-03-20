@@ -38,9 +38,9 @@ public class GenreResource
     @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list of genres") })
     public List<GenreDTO> getGenres()
     {
-        List<Genre> dbGenries = genreRepository.findAll();
+        List<Genre> dbGenres = genreRepository.findAll();
         
-        return dbGenries.stream()
+        return dbGenres.stream()
                         .map(g -> mapGenreToDto(g))
                         .collect(Collectors.toList());
     }
