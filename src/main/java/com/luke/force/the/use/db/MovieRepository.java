@@ -2,6 +2,7 @@ package com.luke.force.the.use.db;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -46,5 +47,10 @@ public class MovieRepository extends AbstractDAO<Movie>
         Query<Movie> query = session.createQuery(cr);
         List<Movie> results = query.getResultList();
         return results;
+    }
+    
+    public Optional<Movie> findById(Long id)
+    {
+        return Optional.ofNullable(get(id));
     }
 }

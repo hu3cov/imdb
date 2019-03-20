@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -36,10 +37,14 @@ public class MovieResource
     
     @GET
     @Path("{id}")
+    @UnitOfWork
     @ApiOperation(value = "View single Movie by given ID")
-    public void getSingleMovie(@PathParam("id") LongParam id)
+    public MovieDTO getSingleMovie(@PathParam("id") LongParam id)
     {
-        // TODO implement
+        Movie movie = movieRepository.findById(id.get())
+                .orElseThrow(() -> new NotFoundException("No such movie."));
+
+        return mapMovieToDto(movie);
     }
     
     @GET
