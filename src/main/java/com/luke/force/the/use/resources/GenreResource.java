@@ -14,6 +14,9 @@ import com.luke.force.the.use.dto.GenreDTO;
 
 import io.dropwizard.hibernate.UnitOfWork;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @Path("genres")
 @Api(value = "/genres")
@@ -29,6 +32,10 @@ public class GenreResource
     
     @GET
     @UnitOfWork
+    @ApiOperation(value = "Finds all Genres in database",
+            notes = "Preview of Genre list, useful when adding or updating Movie",
+            response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully retrieved list of genres") })
     public List<GenreDTO> getGenres()
     {
         List<Genre> dbGenries = genreRepository.findAll();

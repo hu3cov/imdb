@@ -30,6 +30,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.params.LongParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -52,7 +53,11 @@ public class MovieResource
     @GET
     @Path("{id}")
     @UnitOfWork
-    @ApiOperation(value = "View single Movie by given ID")
+    @ApiOperation(value = "Single Movie found by id", response = MovieDTO.class)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully found Movie"),
+        @ApiResponse(code = 404, message = "Movie with given id not found")
+    })
     public MovieDTO getSingleMovie(@PathParam("id") LongParam id)
     {
         Movie movie = movieRepository.findById(id.get())
@@ -63,9 +68,11 @@ public class MovieResource
     
     @GET
     @UnitOfWork
-    public List<MovieDTO> getMoviesWithFilters(@DefaultValue("1888") @QueryParam("release-year") Integer releaseYear,
-                                               @DefaultValue("2147483647") @QueryParam("duration") Integer duration,
-                                               @QueryParam("actorId") Long actorId) 
+    @ApiOperation(value = "View collection of all Movies in db", response = List.class)
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Successfully find movies fitting criterias") })
+    public List<MovieDTO> getMoviesWithFilters(@ApiParam(value = "Release year of Movie") @DefaultValue("1888") @QueryParam("release-year") Integer releaseYear,
+                                               @ApiParam(value = "Duration of Movie in minutes") @DefaultValue("2147483647") @QueryParam("duration") Integer duration,
+                                               @ApiParam(value = "Id of Actor") @QueryParam("actorId") Long actorId) 
     {
         return movieRepository.filterMovies(releaseYear, duration, actorId).stream()
                                                                            .map(m -> mapMovieToDto(m))
@@ -76,6 +83,11 @@ public class MovieResource
     @DELETE
     @Path("{id}")
     @UnitOfWork
+    @ApiOperation(value = "Remove Movie from database")
+    @ApiResponses(value = {
+        @ApiResponse(code = 204, message = "Successfully removed Movie"),
+        @ApiResponse(code = 404, message = "Movie with given id not found")
+    })
     public void removeMovie(@PathParam("id") LongParam id)
     {
         Movie movie = movieRepository.findById(id.get())
@@ -86,9 +98,10 @@ public class MovieResource
     
     @POST
     @UnitOfWork
-    @ApiOperation(value = "Add new Movie to database", response = Movie.class)
+    @ApiOperation(value = "Add new Movie to database", response = MovieDTO.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully added new Movie"),
+        @ApiResponse(code = 403, message = "Operation forbidden, Movie name can not duplicate.")
     })
     public MovieDTO createMovie(MovieDTO movieDTO)
     {
@@ -100,9 +113,11 @@ public class MovieResource
     
     @PUT
     @UnitOfWork
-    @ApiOperation(value = "Update existing Movie data", response = Movie.class)
+    @ApiOperation(value = "Update existing Movie data", response = MovieDTO.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully updated movie"),
+        @ApiResponse(code = 400, message = "Lack of id in request, fill it"),
+        @ApiResponse(code = 403, message = "Operation forbidden, Movie name can not duplicate.")
     })
     public MovieDTO updateMovie(MovieDTO movieDTO)
     {
