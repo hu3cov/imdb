@@ -1,0 +1,7 @@
+logging:
+  level: INFO
+  loggers:
+    com.luke.force.the.use: DEBUG
+    
+server:
+  rootPath: /api/*
