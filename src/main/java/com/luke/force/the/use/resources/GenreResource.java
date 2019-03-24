@@ -51,9 +51,9 @@ public class GenreResource
     
     private GenreDTO mapGenreToDto(Genre g)
     {
-        return GenreDTO.builder()
-                       .id(g.getId())
-                       .name(g.getName())
-                       .build();
+        return GenreDTO.Builder.newInstance()
+		                       .id(g.getId())
+		                       .name(g.getName())
+		                       .build();
     }
 }

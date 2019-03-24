@@ -13,8 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "GENRES")
 @NamedQueries(
@@ -24,7 +22,6 @@ import lombok.Data;
         query = "SELECT g FROM Genre g"
     )
 })
-@Data
 public class Genre
 {
     @Id
@@ -37,4 +34,28 @@ public class Genre
 
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private List<Movie> movies;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Movie> getMovies() {
+		return movies;
+	}
+
+	public void setMovies(List<Movie> movies) {
+		this.movies = movies;
+	}
 }

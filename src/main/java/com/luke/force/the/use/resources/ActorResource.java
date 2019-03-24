@@ -51,10 +51,10 @@ public class ActorResource
     
     private ActorDTO mapActorToDto(Actor a)
     {
-        return ActorDTO.builder()
-                       .id(a.getId())
-                       .fullName(a.getName() + " " + a.getSurname())
-                       .birthDate(a.getBirthDate() != null ? a.getBirthDate().toString() : null)
-                       .build();
+        return ActorDTO.Builder.newInstance()
+		                       .id(a.getId())
+		                       .fullName(a.getName() + " " + a.getSurname())
+		                       .birthDate(a.getBirthDate() != null ? a.getBirthDate().toString() : null)
+		                       .build();
     }
 }

@@ -14,11 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
-
 @Entity
 @Table(name = "MOVIES")
-@Data
 public class Movie
 {
     @Id
@@ -49,4 +46,60 @@ public class Movie
                joinColumns = { @JoinColumn(name = "MOVIE_ID", referencedColumnName = "ID") }, 
                inverseJoinColumns = { @JoinColumn(name = "ACTOR_ID", referencedColumnName = "ID") })
     private List<Actor> actors;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getStoryline() {
+		return storyline;
+	}
+
+	public void setStoryline(String storyline) {
+		this.storyline = storyline;
+	}
+
+	public LocalDate getReleaseDate() {
+		return releaseDate;
+	}
+
+	public void setReleaseDate(LocalDate releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
+
+	public List<Genre> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<Genre> genres) {
+		this.genres = genres;
+	}
+
+	public List<Actor> getActors() {
+		return actors;
+	}
+
+	public void setActors(List<Actor> actors) {
+		this.actors = actors;
+	}
 }

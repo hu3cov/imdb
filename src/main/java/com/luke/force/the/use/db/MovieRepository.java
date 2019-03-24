@@ -11,7 +11,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.ws.rs.ForbiddenException;
-import javax.ws.rs.NotFoundException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
